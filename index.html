@@ -92,6 +92,11 @@
 
     function getGiveawayGames(appArray) {
         var appString = "";
+
+        console.log(appArray);
+        if (typeof appArray === 'undefined') {
+            return 'Nothing? For some odd reason, Steam\'s API does not return any giveaway games here, and the giveaway_id is set to 0.';
+        }
         
         for(var i in appArray) {
             var app = appArray[i];
