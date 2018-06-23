@@ -147,7 +147,7 @@
                         // Planet image
                         '<tr><td><div id="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div id="planetInfo">'
                         // Planet info
-                        + '<h2>' + planet.state.priority + ' - ' + planet.state.name + '</h2>'
+                        + '<h2>' + planet.state.priority + ' - <a href="https://store.steampowered.com/prizes/view/' + planet.state.giveaway_id + '">' + planet.state.name + '</a></h2>'
                         + 'Planet activated at: ' + convertUnix(planet.state.activation_time) + ' GMT'
                         + '<br>Total players: ' + planet.state.total_joins.toLocaleString()
                         + '<br>Current players: ' + planet.state.current_players.toLocaleString()
@@ -165,7 +165,7 @@
                         // Planet image
                         '<tr><td><div id="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div id="planetInfo">'
                         // Planet info
-                        + '<h2>' + planet.state.priority + ' - ' + planet.state.name + '</h2>'
+                        + '<h2>' + planet.state.priority + ' - <a href="https://store.steampowered.com/prizes/view/' + planet.state.giveaway_id + '">' + planet.state.name + '</a></h2>'
                         + 'Total players: '  + '<span style="color:red">This planet is not active yet!</span>'
                         + '<br>Current players: ' + '<span style="color:red">This planet is not active yet!</span>'
                         + '<br>Progress: ' + '<span style="color:red">This planet is not active yet!</span>'
