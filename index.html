@@ -165,7 +165,7 @@
     function reload() {
         $("#loading").html('<h1>Loading data from Steam...</h1>');
         console.log("[DEBUG] Loading Steam data...")
-        $.getJSON('http://allorigins.me/get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){                console.log("[DEBUG] Loaded Steam data!")
+        $.getJSON('https://allorigins.me/get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){                console.log("[DEBUG] Loaded Steam data!")
             updatePlanets(data.contents);
         });
     }
