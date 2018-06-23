@@ -91,7 +91,7 @@
 
         for(var i in clanArray) {
             var clan = clanArray[i];
-            clanString += '<a href="https://steamcommunity.com/groups/' + clan.clan_info.url + '">' + clan.clan_info.name + '</a><br>';
+            clanString += '<a href="https://steamcommunity.com/groups/' + clan.clan_info.url + '">' + clan.clan_info.name + '</a> (' + clan.num_zones_controled +' zones claimed)<br>';
         }
         return clanString;
     }
