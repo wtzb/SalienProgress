@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" /> 
+    <title>Salien Planet Progress</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1c0f13;
+            color: aliceblue;
+        }
+        a {
+            color:aliceblue;
+        }
+        h2 {
+            padding: 0px;
+            margin: 0px;
+        }
+        table td, table td * {
+            vertical-align: top;
+        }
+        table {
+            border-collapse:separate; 
+            border-spacing: 2em 1em;   
+
+            width: 90%;
+            margin: 0px auto;
+        }
+        #welcome {
+            margin: auto;
+            width: 50%;
+            text-align: center;
+            margin-bottom: 50px;
+            margin-top: 10px;
+        }
+        #loading {
+            text-align: center;
+        }
+        #planetGames img {
+            max-height: 50px;
+            max-width: auto;
+            margin-right: 2px;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+ <body>
+    <div id="welcome">
+        <img src="https://steamcommunity-a.akamaihd.net/public/images/saliengame/saliens_logo.png">
+        <p>This page lists an overview of the current planet progression in Steam's Saliens minigame.</p>
+        <a href="https://steamcommunity.com/id/Klaaiklut">My Steam account</a> - <a href="https://github.com/wtzb/SalienProgress">This project on GitHub</a> 
+    </div>
+
+
+    <table id="planets"></table> 
+
+    <div id="loading"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    function convertToPercent(fraction) {
+        if (fraction <= 0.25) {
+            return '<span style="color:#FF4400">' + (parseFloat(fraction * 100).toFixed(2)) + '&#37;</span>';
+        } else if (fraction <= 0.5) {
+            return '<span style="color:#FFAA00">' + (parseFloat(fraction * 100).toFixed(2)) + '&#37;</span>';
+        } else if (fraction <= 0.75) {
+            return '<span style="color:#FFFF00">' + (parseFloat(fraction * 100).toFixed(2)) + '&#37;</span>';
+        }
+        percent = (parseFloat(fraction * 100).toFixed(2)) + '&#37;';
+        return percent;
+    }
+
+    function getGiveawayGames(appArray) {
+        var appString = "";
+        
+        for(var i in appArray) {
+            var app = appArray[i];
+            appString += '<a href=\"' + "https://store.steampowered.com/app/" + app + '\"><img src=\"' + 'https://steamcdn-a.akamaihd.net/steam/apps/' + app + '/header.jpg' + '\"/></a>'
+        }
+        return appString;
+    }
+
+    function getTopClans(clanArray) {
+        var clanString = "";
+
+        for(var i in clanArray) {
+            var clan = clanArray[i];
+            clanString += clan.clan_info.name + '<br>';
+        }
+        return clanString;
+    }
+
+    function updatePlanets(data) {
+        // Got data, done with loading
+        $("#loading").html('');
+        $('#planets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
+
+
+        var planets = JSON.parse(data).response.planets;
+
+        for(var i in planets) {
+            var planet = planets[i];
+
+            console.log(planet);
+
+            if(planet.state.active) {
+                if(planet.state.captured){
+                    $('#planets').append(
+                        // Planet image
+                        '<tr><td><div id="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div id="planetInfo">'
+                        // Planet info
+                        + '<h2>' + planet.state.priority + ' - ' + planet.state.name + '</h2>'
+                        + 'Total players: ' + planet.state.total_joins.toLocaleString()
+                        + '<br>Current players: ' + planet.state.current_players.toLocaleString()
+                        + '<br>Progress: ' + '<span style="color:#7FFF00">Captured!</span>'
+                        + '<br><a href="https://store.steampowered.com/prizes/winners/' + planet.state.giveaway_id + '">Click here for giveaway winners</a>'
+                        + '</div><td>'
+                        // Planet clans
+                        + getTopClans(planet.top_clans) + '</td><td><div id="planetGames">'
+                        // Giveaway games
+                        + getGiveawayGames(planet.giveaway_apps)
+                        + '</div></td></tr>'
+                    );
+                }else {
+                    $('#planets').append(
+                        // Planet image
+                        '<tr><td><div id="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div id="planetInfo">'
+                        // Planet info
+                        + '<h2>' + planet.state.priority + ' - ' + planet.state.name + '</h2>'
+                        + 'Total players: ' + planet.state.total_joins.toLocaleString()
+                        + '<br>Current players: ' + planet.state.current_players.toLocaleString()
+                        + '<br>Progress: ' + convertToPercent(planet.state.capture_progress)
+                        + '</div><td>'
+                        // Planet clans
+                        + getTopClans(planet.top_clans) + '</td><td><div id="planetGames">'
+                        // Giveaway games
+                        + getGiveawayGames(planet.giveaway_apps)
+                        + '</div></td></tr>'
+                    );
+                }
+            }else{
+                $('#planets').append(
+                        // Planet image
+                        '<tr><td><div id="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div id="planetInfo">'
+                        // Planet info
+                        + '<h2>' + planet.state.priority + ' - ' + planet.state.name + '</h2>'
+                        + 'Total players: '  + '<span style="color:red">This planet is not active yet!</span>'
+                        + '<br>Current players: ' + '<span style="color:red">This planet is not active yet!</span>'
+                        + '<br>Progress: ' + '<span style="color:red">This planet is not active yet!</span>'
+                        + '</div><td>'
+                        // Planet clans
+                        + '<span style="color:red">This planet is not active yet!</span>' + '</td><td><div id="planetGames">'
+                        // Giveaway games
+                        + getGiveawayGames(planet.giveaway_apps)
+                        + '</div></td></tr>'
+                    );
+            }
+            
+        }
+        
+    }
+
+    function reload() {
+        $("#loading").html('<h1>Loading data from Steam...</h1>');
+        console.log("[DEBUG] Loading Steam data...")
+        $.getJSON('http://allorigins.me/get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){                console.log("[DEBUG] Loaded Steam data!")
+            updatePlanets(data.contents);
+        });
+    }
+    
+    reload();
+    </script>
+</body>
+</html>
