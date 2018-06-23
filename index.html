@@ -38,6 +38,10 @@
         #loading {
             text-align: center;
         }
+        /* #planetClans img {
+            max-height: 50px;
+            max-width: auto;
+        } */
         #planetGames img {
             max-height: 50px;
             max-width: auto;
@@ -87,7 +91,7 @@
 
         for(var i in clanArray) {
             var clan = clanArray[i];
-            clanString += clan.clan_info.name + '<br>';
+            clanString += '<a href="https://steamcommunity.com/groups/' + clan.clan_info.url + '">' + clan.clan_info.name + '</a><br>';
         }
         return clanString;
     }
@@ -116,9 +120,9 @@
                         + '<br>Current players: ' + planet.state.current_players.toLocaleString()
                         + '<br>Progress: ' + '<span style="color:#7FFF00">Captured!</span>'
                         + '<br><a href="https://store.steampowered.com/prizes/winners/' + planet.state.giveaway_id + '">Click here for giveaway winners</a>'
-                        + '</div><td>'
+                        + '</div><td><div id="planetClans">'
                         // Planet clans
-                        + getTopClans(planet.top_clans) + '</td><td><div id="planetGames">'
+                        + getTopClans(planet.top_clans) + '</div></td><td><div id="planetGames">'
                         // Giveaway games
                         + getGiveawayGames(planet.giveaway_apps)
                         + '</div></td></tr>'
