@@ -78,9 +78,7 @@
         <a href="https://steamcommunity.com/id/Klaaiklut">My Steam account</a> - <a href="https://github.com/wtzb/SalienProgress">This project on GitHub</a> 
     </div>
 
-    <div class="currentPlanetsStatus">
-        <a name="currentPlanets"></a><br><h1>Current active planets</h1><br><a href="#capturedPlanets">Captured planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>
-    </div>
+    <div class="currentPlanetsStatus"></div>
     <table class="currentPlanets">
         <col width="150">
         <col width="400">
@@ -88,9 +86,7 @@
         <col width="400">
     </table> 
 
-    <div class="capturedPlanetsStatus">
-        <a name="capturedPlanets"></a><br><h1>Captured planets</h1><br>Sorted by time/date captured.<br><a href="#currentPlanets">Current planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>
-    </div>
+    <div class="capturedPlanetsStatus"></div>
     <table class="capturedPlanets">
         <col width="150">
         <col width="400">
@@ -98,9 +94,7 @@
         <col width="400">
     </table>
 
-    <div class="upcomingPlanetsStatus">
-        <a name="upcomingPlanets"></a><h1>Upcoming planets</h1><br><a href="#currentPlanets">Current planets</a> - <a href="#capturedPlanets">Captured planets</a><br>
-    </div>
+    <div class="upcomingPlanetsStatus"></div>
     <table class="upcomingPlanets">
         <col width="150">
         <col width="400">
@@ -199,6 +193,10 @@
         $('.capturedPlanets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
         $('.upcomingPlanets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
 
+        $('.currentPlanetsStatus').append('<a name="currentPlanets"></a><br><h1>Current active planets</h1><br><a href="#capturedPlanets">Captured planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>');
+        $('.capturedPlanetsStatus').append('<a name="capturedPlanets"></a><br><h1>Captured planets</h1><br>Sorted by time/date captured.<br><a href="#currentPlanets">Current planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>');
+        $('.upcomingPlanetsStatus').append('<a name="upcomingPlanets"></a><h1>Upcoming planets</h1><br><a href="#currentPlanets">Current planets</a> - <a href="#capturedPlanets">Captured planets</a><br>');
+
 
         var planets = JSON.parse(data).response.planets;
 
@@ -281,11 +279,25 @@
     }
 
     function reload() {
-        $(".loading").html('<h1>Loading data from Steam...</h1>');
-        //console.log("[DEBUG] Loading Steam data...")
-        $.getJSON('https://allorigins.me/get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){
-            //console.log("[DEBUG] Loaded Steam data!")
+        // Set AJAX request timeout of 6s
+        $.ajaxSetup({
+        timeout: 6000
+        });
+
+        $(".loading").html('<h1>Loading data from Steam...</h1><br>');
+        console.log("[DEBUG] Loading Steam data...");
+        $.getJSON('https://allorigins.me//get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){
+            console.log("[DEBUG] Loaded Steam data!");
             updatePlanets(data.contents);
+        }).fail(function() {
+            console.log("[DEBUG] First proxy seems to be experiencing issues...trying second.");
+            $.getJSON('http://www.whateverorigin.org/get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){
+                console.log("[DEBUG] Loaded Steam data!");
+                updatePlanets(data.contents);
+            }).fail(function() { 
+                console.log("[DEBUG] Second proxy also failed.");
+                $(".loading").append('Failed to get Steam content, please refresh.');
+            });
         });
     }
     
