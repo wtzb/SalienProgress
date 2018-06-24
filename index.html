@@ -126,14 +126,22 @@
         }
     }
 
-    function getTopClans(clanArray) {
-        var clanString = "";
-
-        for(var i in clanArray) {
-            var clan = clanArray[i];
-            clanString += '<a href="https://steamcommunity.com/groups/' + clan.clan_info.url + '">' + clan.clan_info.name + '</a> - ' + clan.num_zones_controled +' zone(s) claimed<br>';
+    function getTopClans(clanArray,state) {
+        if(state !== 'finished') {
+            var clanString = "";
+            for(var i in clanArray) {
+                var clan = clanArray[i];
+                clanString += '<a href="https://steamcommunity.com/groups/' + clan.clan_info.url + '">' + clan.clan_info.name + '</a> - Is dominating ' + clan.num_zones_controled +' zone(s)<br>';
+            }
+            return clanString;
+        } else {
+            var clanString = "";
+            for(var i in clanArray) {
+                var clan = clanArray[i];
+                clanString += '<a href="https://steamcommunity.com/groups/' + clan.clan_info.url + '">' + clan.clan_info.name + '</a> - ' + clan.num_zones_controled +' zone(s) claimed<br>';
+            }
+            return clanString;
         }
-        return clanString;
     }
 
     function updatePlanets(data) {
@@ -164,7 +172,7 @@
                         + '<br><a href="https://store.steampowered.com/prizes/winners/' + planet.state.giveaway_id + '">Click here for giveaway winners</a>'
                         + '</div><td><div class="planetClans">'
                         // Planet clans
-                        + getTopClans(planet.top_clans) + '</div></td><td align="center"><div class="planetGames">'
+                        + getTopClans(planet.top_clans,'finished') + '</div></td><td align="center"><div class="planetGames">'
                         // Giveaway games
                         + getGiveawayGames(planet.giveaway_apps)
                         + '</div></td></tr>'
