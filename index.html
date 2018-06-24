@@ -176,7 +176,9 @@
     function updatePlanets(data) {
         // Got data, done with loading
         $(".loading").html('');
-        $('.planets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
+        $('.currentPlanets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
+        $('.capturedPlanets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
+        $('.upcomingPlanets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
 
 
         var planets = JSON.parse(data).response.planets;
