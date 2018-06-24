@@ -93,7 +93,6 @@
     function getGiveawayGames(appArray) {
         var appString = "";
 
-        console.log(appArray);
         if (typeof appArray === 'undefined') {
             return 'Nothing? For some odd reason, Steam\'s API does not return any giveaway games here, and the giveaway_id is set to 0.';
         }
@@ -126,7 +125,7 @@
         for(var i in planets) {
             var planet = planets[i];
 
-            console.log(planet);
+            //console.log(planet);
 
             if(planet.state.active) {
                 if(planet.state.captured){
@@ -190,8 +189,9 @@
 
     function reload() {
         $("#loading").html('<h1>Loading data from Steam...</h1>');
-        console.log("[DEBUG] Loading Steam data...")
-        $.getJSON('https://allorigins.me/get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){                console.log("[DEBUG] Loaded Steam data!")
+        //console.log("[DEBUG] Loading Steam data...")
+        $.getJSON('https://allorigins.me/get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){
+            //console.log("[DEBUG] Loaded Steam data!")
             updatePlanets(data.contents);
         });
     }
