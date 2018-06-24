@@ -66,7 +66,7 @@
             color: #999;
             text-decoration: none;
         }
-        .currentPlanetsStatus, .capturedPlanetsStatus, .upcomingPlanetsStatus h1 {
+        .currentPlanetsStatus, .capturedPlanetsStatus, .upcomingPlanetsStatus {
             text-align: center;
         }
     </style>
@@ -217,7 +217,7 @@
             if(planet.state.active) {
                 if(planet.state.captured){
                     if (capturedPlanetList == 0) {
-                        $('.capturedPlanetsStatus').append('<br><h1>Captured planets</h1><br>Sorted by time/date captured.<br><br>');
+                        $('.capturedPlanetsStatus').append('<a name="capturedPlanets"></a><br><h1>Captured planets</h1><br>Sorted by time/date captured.<br><a href="#currentPlanets">Current planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>');
                         capturedPlanetList = 1;
                     }
                     $('.capturedPlanets').append(
@@ -240,7 +240,7 @@
                     );
                 }else {
                     if (currentPlanetList == 0) {
-                        $('.currentPlanetsStatus').append('<br><h1>Current active planets</h1><br><br>');
+                        $('.currentPlanetsStatus').append('<a name="currentPlanets"></a><br><h1>Current active planets</h1><br><a href="#capturedPlanets">Captured planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>');
                         currentPlanetList = 1;
                     }
                     $('.currentPlanets').append(
@@ -262,7 +262,7 @@
                 }
             }else{
                 if (upcomingPlanetList == 0) {
-                        $('.upcomingPlanetsStatus').append('<h1>Upcoming planets</h1>');
+                        $('.upcomingPlanetsStatus').append('<a name="upcomingPlanets"></a><h1>Upcoming planets</h1><br><a href="#currentPlanets">Current planets</a> - <a href="#capturedPlanets">Captured planets</a><br>');
                         upcomingPlanetList = 1;
                     }
                 $('.upcomingPlanets').append(
