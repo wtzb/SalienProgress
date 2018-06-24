@@ -14,10 +14,13 @@
         }
         a {
             color:aliceblue;
+        }
+        h2 a {
+            color:aliceblue;
             text-decoration: none;
 
         }
-        h2 {
+        h2,h1 {
             padding: 0px;
             margin: 0px;
         }
@@ -30,6 +33,7 @@
 
             width: 90%;
             margin: 0px auto;
+            /* table-layout: fixed; */
         }
         .welcome {
             margin: auto;
@@ -62,6 +66,9 @@
             color: #999;
             text-decoration: none;
         }
+        .currentPlanetsStatus, .capturedPlanetsStatus, .upcomingPlanetsStatus h1 {
+            text-align: center;
+        }
     </style>
 </head>
  <body>
@@ -71,8 +78,30 @@
         <a href="https://steamcommunity.com/id/Klaaiklut">My Steam account</a> - <a href="https://github.com/wtzb/SalienProgress">This project on GitHub</a> 
     </div>
 
+    <div class="currentPlanetsStatus"></div>
+    <table class="currentPlanets">
+        <col width="150">
+        <col width="400">
+        <col width="300">
+        <col width="400">
+    </table> 
 
-    <table class="planets"></table> 
+    <div class="capturedPlanetsStatus"></div>
+    <table class="capturedPlanets">
+        <col width="150">
+        <col width="400">
+        <col width="300">
+        <col width="400">
+    </table>
+
+    <div class="upcomingPlanetsStatus"></div>
+    <table class="upcomingPlanets">
+        <col width="150">
+        <col width="400">
+        <col width="300">
+        <col width="400">
+    </table> 
+
 
     <div class="loading"></div>
 
@@ -152,6 +181,29 @@
 
         var planets = JSON.parse(data).response.planets;
 
+        planets.sort(function(a, b) {
+            return parseFloat(a.state.priority) - parseFloat(b.state.priority);
+        });
+
+        planets.sort((a, b) => {
+        var asdf = b.state.active - a.state.active
+            if (asdf != 0) {
+                return asdf;
+            }
+            var c = a.state.captured - b.state.captured;
+            if (c != 0) {
+                return c;
+            }
+            if (a.state.captured) {
+                return a.state.capture_time - b.state.capture_time;
+            }
+            return a.state.progress - b.state.progress;
+        });
+
+        var currentPlanetList = 0;
+        var capturedPlanetList = 0;
+        var upcomingPlanetList = 0;
+
         for(var i in planets) {
             var planet = planets[i];
 
@@ -159,7 +211,11 @@
 
             if(planet.state.active) {
                 if(planet.state.captured){
-                    $('.planets').append(
+                    if (capturedPlanetList == 0) {
+                        $('.capturedPlanetsStatus').append('<br><h1>Captured planets</h1><br>Sorted by time/date captured.<br><br>');
+                        capturedPlanetList = 1;
+                    }
+                    $('.capturedPlanets').append(
                         // Planet image
                         '<tr><td><div class="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div class="planetInfo">'
                         // Planet info
@@ -178,7 +234,11 @@
                         + '</div></td></tr>'
                     );
                 }else {
-                    $('.planets').append(
+                    if (currentPlanetList == 0) {
+                        $('.currentPlanetsStatus').append('<br><h1>Current active planets</h1><br><br>');
+                        currentPlanetList = 1;
+                    }
+                    $('.currentPlanets').append(
                         // Planet image
                         '<tr><td><div class="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div class="planetInfo">'
                         // Planet info
@@ -196,21 +256,25 @@
                     );
                 }
             }else{
-                $('.planets').append(
-                        // Planet image
-                        '<tr><td><div id="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div class="planetInfo disabledPlanet">'
-                        // Planet info
-                        + '<h2>' + planet.state.priority + ' - ' + getGiveawayURL(planet.state.giveaway_id,planet.state.name) + '</h2>'
-                        + 'Total players: '  + 'This planet is not active yet!'
-                        + '<br>Current players: ' + 'This planet is not active yet!'
-                        + '<br>Progress: ' + 'This planet is not active yet!'
-                        + '</div><td>'
-                        // Planet clans
-                        + '<span style="color:#999">This planet is not active yet!</span>' + '</td><td align="center"><div class="planetGames">'
-                        // Giveaway games
-                        + getGiveawayGames(planet.giveaway_apps)
-                        + '</div></td></tr>'
-                    );
+                if (upcomingPlanetList == 0) {
+                        $('.upcomingPlanetsStatus').append('<h1>Upcoming planets</h1>');
+                        upcomingPlanetList = 1;
+                    }
+                $('.upcomingPlanets').append(
+                    // Planet image
+                    '<tr><td><div id="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div class="planetInfo disabledPlanet">'
+                    // Planet info
+                    + '<h2>' + planet.state.priority + ' - ' + getGiveawayURL(planet.state.giveaway_id,planet.state.name) + '</h2>'
+                    + 'Total players: '  + 'This planet is not active yet!'
+                    + '<br>Current players: ' + 'This planet is not active yet!'
+                    + '<br>Progress: ' + 'This planet is not active yet!'
+                    + '</div><td>'
+                    // Planet clans
+                    + '<span style="color:#999">This planet is not active yet!</span>' + '</td><td align="center"><div class="planetGames">'
+                    // Giveaway games
+                    + getGiveawayGames(planet.giveaway_apps)
+                    + '</div></td></tr>'
+                );
             }
             
         }
