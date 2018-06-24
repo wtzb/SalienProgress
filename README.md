@@ -11,4 +11,4 @@ You can visit the project by visiting [wtzb.github.io/SalienProgress](https://wt
 All feedback is welcome, be it bugs, feature requests or simply a comment. Feel free to open an issue or [add me on steam](https://steamcommunity.com/id/Klaaiklut/).
 
 
-Credits to [Dimitar Nestorov](https://github.com/dimitarnestorov) for their various helpful contributions.
+Credits to [Dimitar Nestorov](https://github.com/dimitarnestorov) and [Luit Hollander](https://github.com/MrLuit) for their various helpful contributions.
