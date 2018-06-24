@@ -156,11 +156,11 @@
                         '<tr><td><div class="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div class="planetInfo">'
                         // Planet info
                         + '<h2>' + planet.state.priority + ' - ' + getGiveawayURL(planet.state.giveaway_id,planet.state.name) + '</h2>'
-                        + 'Planet activated at: ' + convertUnix(planet.state.activation_time) + ' GMT'
+                        + 'Planet activated at: ' + convertUnix(planet.state.activation_time)
                         + '<br>Total players: ' + planet.state.total_joins.toLocaleString()
                         + '<br>Current players: ' + planet.state.current_players.toLocaleString()
                         + '<br>Progress: ' + '<span style="color:#7FFF00">Captured!</span>'
-                        + '<br>Captured at: ' + convertUnix(planet.state.capture_time) + ' GMT'
+                        + '<br>Captured at: ' + convertUnix(planet.state.capture_time)
                         + '<br><a href="https://store.steampowered.com/prizes/winners/' + planet.state.giveaway_id + '">Click here for giveaway winners</a>'
                         + '</div><td><div class="planetClans">'
                         // Planet clans
@@ -175,7 +175,7 @@
                         '<tr><td><div class="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div class="planetInfo">'
                         // Planet info
                         + '<h2>' + planet.state.priority + ' - ' + getGiveawayURL(planet.state.giveaway_id,planet.state.name) + '</h2>'
-                        + 'Planet activated at: ' + convertUnix(planet.state.activation_time) + ' GMT'
+                        + 'Planet activated at: ' + convertUnix(planet.state.activation_time)
                         + '<br>Total players: ' + planet.state.total_joins.toLocaleString()
                         + '<br>Current players: ' + planet.state.current_players.toLocaleString()
                         + '<br>Progress: ' + convertToPercent(planet.state.capture_progress)
