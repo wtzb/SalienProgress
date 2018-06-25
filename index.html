@@ -291,10 +291,13 @@
             updatePlanets(data.contents);
         }).fail(function() {
             console.log("[DEBUG] First proxy seems to be experiencing issues...trying second.");
-            $.getJSON('http://www.whateverorigin.org/get?url=https%3A//community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/%3Flanguage%3Denglish&callback=?', function(data){
+            // Try with another proxy in case first one fails
+            $.getJSON('https://cors-proxy.htmldriven.com/?url=https://community.steam-api.com/ITerritoryControlMinigameService/GetPlanets/v0001/?language=english', function(data){
                 console.log("[DEBUG] Loaded Steam data!");
-                updatePlanets(data.contents);
+                //console.log(data.body);
+                updatePlanets(data.body);
             }).fail(function() { 
+                // Everything went to hell
                 console.log("[DEBUG] Second proxy also failed.");
                 $(".loading").append('Failed to get Steam content, please refresh. You could also try running this file locally, instead of from wtzb.github.io.');
             });
