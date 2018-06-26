@@ -193,7 +193,7 @@
         $('.capturedPlanets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
         $('.upcomingPlanets').append('<tr><th>Planet</th><th>Planet info</th><th>Top clans</th><th>Giveaway games</th></tr>');
 
-        $('.currentPlanetsStatus').append('<a name="currentPlanets"></a><br><h1>Current active planets</h1><br><a href="#capturedPlanets">Captured planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>');
+        $('.currentPlanetsStatus').append('<a name="currentPlanets"></a><br><h1>Current active planets</h1><br>Sorted by capture progress.<br><a href="#capturedPlanets">Captured planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>');
         $('.capturedPlanetsStatus').append('<a name="capturedPlanets"></a><br><h1>Captured planets</h1><br>Sorted by time/date captured.<br><a href="#currentPlanets">Current planets</a> - <a href="#upcomingPlanets">Upcoming planets</a><br>');
         $('.upcomingPlanetsStatus').append('<a name="upcomingPlanets"></a><h1>Upcoming planets</h1><br><a href="#currentPlanets">Current planets</a> - <a href="#capturedPlanets">Captured planets</a><br>');
 
@@ -242,7 +242,12 @@
                 + '</div></td></tr>';
         }).join(''));
 
-        $('.currentPlanets').append(currentPlanets.map(function(planet) {
+        $('.currentPlanets').append(currentPlanets.sort(function(a, b) {
+            if(a.state.capture_progress < b.state.capture_progress) {
+                return 1;
+            }
+            return 0;
+        }).map(function(planet) {
             console.log(planet);
 
             return '<tr><td><div class="planetImg"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/assets/saliengame/planets/' + planet.state.image_filename + '" style="width:10em; height:10em;"></div></td><td><div class="planetInfo">'
