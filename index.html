@@ -170,9 +170,13 @@
             var clanString = "";
             for(var i in clanArray) {
                 var clan = clanArray[i];
-                if (clan.num_zones_controled <=3) { 
+                if (clan.clan_info.name == null) {
+                    clanString += '';
                 } else {
-                clanString += '<a href="https://steamcommunity.com/groups/' + clan.clan_info.url + '">' + clan.clan_info.name + '</a> - Is dominating ' + clan.num_zones_controled +' zones<br>';
+                    if (clan.num_zones_controled <=3) { 
+                    } else {
+                    clanString += '<a href="https://steamcommunity.com/groups/' + clan.clan_info.url + '">' + clan.clan_info.name + '</a> - Is dominating ' + clan.num_zones_controled +' zones<br>';
+                    }
                 }
             }
             return clanString;
