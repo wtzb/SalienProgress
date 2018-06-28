@@ -79,6 +79,7 @@
     </div>
 
     <div class="currentPlanetsStatus"></div>
+    <div class="totalZonesRemaining"></div>
     <table class="currentPlanets">
         <col width="150">
         <col width="400">
@@ -221,7 +222,7 @@
             } else {
                 upcomingPlanets.push(planet);
             }
-        });
+        });        
 
         $('.capturedPlanets').append(capturedPlanets.sort(function(a, b) {
             return a.state.capture_time - b.state.capture_time;
@@ -260,7 +261,8 @@
                 + 'Planet activated at: ' + convertUnix(planet.state.activation_time)
                 + '<br>Total players: ' + planet.state.total_joins.toLocaleString()
                 + '<br>Current players: ' + planet.state.current_players.toLocaleString()
-                + '<br>Progress: ' + convertToPercent(planet.state.capture_progress)
+                + '<br><div class="zoneInfo' + planet.id + '">Remaining zones: </div>'
+                + 'Progress: ' + convertToPercent(planet.state.capture_progress)
                 + '</div><td>'
                 // Planet clans
                 + getTopClans(planet.top_clans) + '</td><td align="center"><div class="planetGames">'
@@ -285,6 +287,51 @@
                 + getGiveawayGames(planet.giveaway_apps)
                 + '</div></td></tr>';
         }).join(''));
+
+        // Zone info
+
+        var totalHardZones = [];
+        var totalMediumZones = [];
+        var totalEasyZones = [];
+
+        currentPlanets.forEach(function(planet) {
+            $.getJSON('https://community.steam-api.com/ITerritoryControlMinigameService/GetPlanet/v0001/?id=' + planet.id + '&language=english', function(planetData){
+                console.log("[DEBUG] Loaded planet data for " + planet.state.name);
+                // 3 = hard, 2 = medium, 1 = easy
+                var hardZones = [];
+                var mediumZones = [];
+                var easyZones = [];
+
+                planetData.response.planets[0].zones.forEach(function(zoneData) {
+                    if (zoneData.captured == false) {
+                        if (zoneData.difficulty == 3) {
+                            hardZones.push(zoneData.zone_position);
+                            totalHardZones.push(zoneData.zone_position);
+                        } else if (zoneData.difficulty == 2) {
+                            mediumZones.push(zoneData.zone_position);
+                            totalMediumZones.push(zoneData.zone_position);
+                        } else if (zoneData.difficulty == 1) {
+                            easyZones.push(zoneData.zone_position);
+                            totalEasyZones.push(zoneData.zone_position);
+                        }
+                    }
+
+                });
+
+                if (hardZones != 0) {
+                    $(".zoneInfo" + planet.id).append('<span style="color:red">Hard: ' + hardZones.length + '</span> ');
+                }
+                if (mediumZones != 0) {
+                    $(".zoneInfo" + planet.id).append('<span style="color:yellow">Medium: ' + mediumZones.length + '</span> ');
+                }
+                if (easyZones != 0) {
+                    $(".zoneInfo" + planet.id).append('<span style="color:green">Easy: ' + easyZones.length + '</span> ');
+                }
+            }).fail(function() {
+                // Saliens is probably down
+                console.log("[DEBUG] Couldn't load planet data");
+            });
+        });
     }
 
     function reload() {
