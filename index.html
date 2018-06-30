@@ -66,7 +66,7 @@
             color: #999;
             text-decoration: none;
         }
-        .currentPlanetsStatus, .capturedPlanetsStatus, .upcomingPlanetsStatus {
+        .currentPlanetsStatus, .capturedPlanetsStatus, .upcomingPlanetsStatus, .bossStatusTop {
             text-align: center;
         }
     </style>
@@ -310,8 +310,6 @@
                     console.log('[DEBUG] Boss on zone ' + bossZonePosition);
                     $(".bossStats" + planet.id).append('<span style="color: red">Boss on tile: ' + bossZonePosition + '</span> ');
                     bossPresent++;
-                } else {
-
                 }
 
                 var isInactive = 0;
@@ -319,18 +317,8 @@
                     //console.log(zoneData.boss_active);
                     
                     if (zoneData.boss_active == true) {
-                        $(".bossStats" + planet.id).append('<span style="color: red;background-color: yellow;font-weight: bold">ACTIVE!!!</span> ');
-                        //$('.bossStatusTop').append('<h2 style="color:yellow">There is an active boss on ' + planet.state.name + '!</h2>');
-                    } else {
-                        if (isInactive == 0) {
-                            // if (bossPresent == 1) {
-                            //     $(".bossStats" + planet.id).append('<span style="">inactive/beaten</span> ');
-                            //     bossPresent++;
-                            // } else {
-                            //     $(".bossStats" + planet.id).append('<span style="">No boss zones found</span> ');
-                            //     isInactive++;
-                            // }
-                        }
+                        $(".bossStats" + planet.id).append('<span style="color: red;background-color: yellow;font-weight: bold">ACTIVE</span> ');
+                        $('.bossStatusTop').append('<h2 style="color:yellow">There is an active boss on ' + planet.state.name + '!</h2>');
                     }
 
                     if (zoneData.captured == false) {
