@@ -308,8 +308,7 @@
                 
                 if (typeof bossZonePosition !== "undefined") {
                     console.log('[DEBUG] Boss on zone ' + bossZonePosition);
-                    $(".bossStats" + planet.id).append('<span style="color: red">Boss on tile: ' + bossZonePosition + '</span> ');
-                    bossPresent++;
+                    //$(".bossStats" + planet.id).append('<span style="color: red">Boss on tile: ' + bossZonePosition + '</span> ');
                 }
 
                 var isInactive = 0;
@@ -317,7 +316,7 @@
                     //console.log(zoneData.boss_active);
                     
                     if (zoneData.boss_active == true) {
-                        $(".bossStats" + planet.id).append('<span style="color: red;background-color: yellow;font-weight: bold">ACTIVE</span> ');
+                        $(".bossStats" + planet.id).append('<span style="color: red">Boss on tile: ' + bossZonePosition + '</span> <span style="color: red;background-color: yellow;font-weight: bold">ACTIVE</span> ');
                         $('.bossStatusTop').append('<h2 style="color:yellow">There is an active boss on ' + planet.state.name + '!</h2>');
                     }
 
