@@ -262,7 +262,7 @@
                 + '<br>Total players: ' + planet.state.total_joins.toLocaleString()
                 + '<br>Current players: ' + planet.state.current_players.toLocaleString()
                 + '<br><div class="zoneInfo' + planet.id + '">Remaining zones: </div>'
-                + 'Progress: ' + convertToPercent(planet.state.capture_progress)
+                + 'Progress: ' + convertToPercent(planet.state.capture_progress) + '<div class="bossStats' + planet.id + '">Boss </div>'
                 + '</div><td>'
                 // Planet clans
                 + getTopClans(planet.top_clans) + '</td><td align="center"><div class="planetGames">'
@@ -279,7 +279,7 @@
                 + '<h2>' + planet.state.priority + ' - ' + getGiveawayURL(planet.state.giveaway_id,planet.state.name) + '</h2>'
                 + 'Total players: '  + 'This planet is not active yet!'
                 + '<br>Current players: ' + 'This planet is not active yet!'
-                + '<br>Progress: ' + 'This planet is not active yet!'
+                + '<br>Progress: ' + 'This planet is not active yet!' + 
                 + '</div><td>'
                 // Planet clans
                 + '<span style="color:#999">This planet is not active yet!</span>' + '</td><td align="center"><div class="planetGames">'
@@ -302,7 +302,29 @@
                 var mediumZones = [];
                 var easyZones = [];
 
+
+                var bossZonePosition = planetData.response.planets[0].state.boss_zone_position;
+                
+                if (typeof bossZonePosition !== "undefined") {
+                    console.log('[DEBUG] Boss on zone ' + bossZonePosition);
+                    $(".bossStats" + planet.id).append('<span style="color: red"> on tile: ' + bossZonePosition + '</span> ');
+                } else {
+
+                }
+
+                var isInactive = 0;
                 planetData.response.planets[0].zones.forEach(function(zoneData) {
+                    //console.log(zoneData.boss_active);
+                    
+                    if (zoneData.boss_active == true) {
+                        $(".bossStats" + planet.id).append('<span style="color: red;background-color: yellow;font-weight: bold">ACTIVE</span> ');
+                    } else {
+                        if (isInactive == 0) {
+                            $(".bossStats" + planet.id).append('<span style=""> inactive</span> ');
+                            isInactive++;
+                        }
+                    }
+
                     if (zoneData.captured == false) {
                         if (zoneData.difficulty == 3) {
                             hardZones.push(zoneData.zone_position);
